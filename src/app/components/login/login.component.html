@@ -1,0 +1,60 @@
+<div class="flex h-full w-full justify-center items-center">
+  <p-card
+    header="Login"
+    [style]="{width: '400px'}">
+
+    <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+      <div class="">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          pInputText
+          [(ngModel)]="login.email"
+          class="w-full"
+          id="email"
+          name="email"
+          #email="ngModel"
+          required
+          pattern="[a-z0-9\._%\+\-]+@[a-z0-9%\.\-]+\.[a-z]{2,}$"
+        />
+        @if (email.invalid && (email.dirty || email.touched)) {
+          <small>
+            @if (email.hasError('required')) {
+              <span>El campo emai es requerido</span>
+            } @else if(email.hasError('pattern')) {
+              <span>El email es invalido </span>
+            }
+          </small>
+        }
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <p-password
+          [(ngModel)]="login.password"
+          [feedback]="false"
+          [toggleMask]="true"
+          inputId="password"
+          name="password"
+          #password="ngModel"
+          required
+          inputStyleClass="w-full"
+          styleClass="w-full"
+        />
+        @if (password.invalid && (password.dirty || password.touched)) {
+          <small class="block p-error">La contraseña es requerido</small>
+        }
+      </div>
+      <p-button
+        label="Sign In"
+        styleClass="w-full mt-4"
+        [disabled]="loginForm.invalid"
+        type="submit"
+      >
+      </p-button>
+      <div class="mt-3">
+        aun no eres miembro?<a routerLink="/register" > Register</a>
+    </div>
+    </form>
+  </p-card>
+</div>
+
