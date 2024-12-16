@@ -74,11 +74,10 @@
                 label="Register"
                 styleClass="w-full"
                 [disabled]="registerForm.invalid"
+                [loading]="isLoading"
             />
             <div class="mt-3">
                 ya eres mienbro ?<a routerLink="/login" > login</a>
-                                  <p-button (onClick)="show()" label="Show" />
-
             </div>
         </form>
     </p-card>

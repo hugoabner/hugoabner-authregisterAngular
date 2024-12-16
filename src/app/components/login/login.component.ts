@@ -5,6 +5,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
+import { Toast } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +17,14 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     PasswordModule,
     ButtonModule,
-    RouterLink],
+    RouterLink,
+    Toast],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
   login = {
     email: '',
     password: '',

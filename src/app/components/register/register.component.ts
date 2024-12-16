@@ -1,16 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { passwordMismatchValidator } from '../../shared/password.mismatch.directive';
 import { MessageService } from 'primeng/api';
-import { Toast, ToastModule } from 'primeng/toast';
+import { Toast } from 'primeng/toast';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
 import { RegisterPostData } from '../../iterfaces/auth';
+import { ProgressSpinner } from 'primeng/progressspinner';
+
 
 @Component({
   selector: 'app-register',
@@ -23,7 +25,8 @@ import { RegisterPostData } from '../../iterfaces/auth';
     ButtonModule,
     RouterLink,
     Toast,
-    NgIf
+    NgIf,
+    ProgressSpinner
     ],
 
   providers: [MessageService],
@@ -31,10 +34,11 @@ import { RegisterPostData } from '../../iterfaces/auth';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  isLoading  : boolean = false;
 
   private readonly registerService = inject(AuthService);
   private readonly messageService = inject(MessageService);
-
+  private readonly router = inject(Router);
 
   registerForm = new FormGroup({
     fullName: new FormControl('', [Validators.required]),
@@ -48,21 +52,29 @@ export class RegisterComponent {
     validators: passwordMismatchValidator
   })
 
-  show() {
-      this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Message Content', life: 3000 });
-  }
-
-
   onRegister() {
+    this.isLoading = true;
     const postData = {...this.registerForm.value}
     delete postData.confirmPassword;
     this.registerService.registerUser(postData as RegisterPostData).subscribe({
       next: (response) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User created', life: 3000 });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Usuario registrado exito',
+        });
+        this.isLoading = false;
+        this.router.navigate(['/login']);
         console.log(response)
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'User not created', life: 3000 });
+        this.isLoading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Ocurrio un error, intentelo otra vez',
+          //life: 3000
+        });
         console.log(err);
       }
     })
