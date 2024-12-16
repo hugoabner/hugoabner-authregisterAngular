@@ -3,3 +3,7 @@ export interface RegisterPostData {
   email: String;
   password: String
 }
+
+export interface User extends RegisterPostData {
+  id : String
+}
