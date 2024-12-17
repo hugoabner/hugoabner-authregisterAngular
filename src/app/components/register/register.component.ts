@@ -72,7 +72,7 @@ export class RegisterComponent {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Ocurrio un error, intentelo otra vez',
+          detail: 'cambio nuevo register',
           //life: 3000
         });
         console.log(err);
